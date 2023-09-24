@@ -44,6 +44,12 @@ extern int selinux_android_setcontext(uid_t uid,
 				      const char *seinfo,
 				      const char *name);
 
+extern int selinux_android_setcontext2(uid_t uid,
+				      bool isSystemServer,
+				      const char *seinfo,
+				      const char *name,
+				      const uint64_t selinux_flags);
+
 /* Builds a new context based on context, adding the categories from userid and
  * appid. If userid or appid are -1, the corresponding categories are not
  * modified. */
