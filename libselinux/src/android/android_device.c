@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <fnmatch.h>
 #include <fts.h>
+#include <inttypes.h>
 #include <libgen.h>
 #include <limits.h>
 #include <linux/magic.h>
@@ -90,6 +91,15 @@ int selinux_android_setcontext(uid_t uid,
 			       const char *seinfo,
 			       const char *pkgname)
 {
+    return selinux_android_setcontext2(uid, isSystemServer, seinfo, pkgname, 0);
+}
+
+int selinux_android_setcontext2(uid_t uid,
+			       bool isSystemServer,
+			       const char *seinfo,
+			       const char *pkgname,
+			       const uint64_t selinux_flags)
+{
 	char *orig_ctx_str = NULL;
 	const char *ctx_str = NULL;
 	context_t ctx = NULL;
@@ -119,6 +129,15 @@ int selinux_android_setcontext(uid_t uid,
 	rc = security_check_context(ctx_str);
 	if (rc < 0)
 		goto err;
+
+	char buf_for_hex_uint64[17]; // up to 16 hex chars (64 / 4) + NUL
+	if (selinux_flags != 0) {
+		snprintf(buf_for_hex_uint64, sizeof buf_for_hex_uint64, "%" PRIx64 , selinux_flags);
+
+		 rc = setselinux_flags(buf_for_hex_uint64);
+		if (rc < 0)
+			goto err;
+	}
 
 	if (strcmp(ctx_str, orig_ctx_str)) {
 		rc = selinux_android_setcon(ctx_str);
