@@ -32,6 +32,7 @@ LIBSELINUX_R {
     selinux_android_set_sehandle; # llndk systemapi
     selinux_android_setcon; # llndk systemapi
     selinux_android_setcontext; # llndk systemapi
+    selinux_android_setcontext2; # llndk systemapi
     selinux_android_vendor_service_context_handle; # llndk systemapi
     selinux_check_access; # llndk systemapi
     selinux_log_callback; # llndk systemapi
