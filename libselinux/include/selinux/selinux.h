@@ -44,6 +44,8 @@ extern int getcon_raw(char ** con);
 extern int setcon(const char * con);
 extern int setcon_raw(const char * con);
 
+extern int setselinux_flags(const char * flags);
+
 /* Get context of process identified by pid, and 
    set *con to refer to it.  Caller must free via freecon. */
 extern int getpidcon(pid_t pid, char ** con);
